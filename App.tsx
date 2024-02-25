@@ -1,20 +1,44 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, SafeAreaView, StatusBar, StyleSheet, View } from "react-native";
+import {
+  Inter_700Bold,
+  Inter_400Regular,
+  useFonts
+} from "@expo-google-fonts/inter"
+
+import { Home } from "./src/screens/Home";
+import { theme } from "./src/styles/defaultTheme";
 
 export default function App() {
+  const [hasFontsLoaded] = useFonts({
+    Inter_400Regular,
+    Inter_700Bold
+  })
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaView style={{flex: 1}}>
+      {/* Se as fontes forem carregadas, renderiza a tela de Home */}
+      {
+        hasFontsLoaded ?
+          <Home />
+        :
+        <View style={styles.loading}>
+          <ActivityIndicator />
+        </View>
+      }
+      <StatusBar 
+        barStyle={"light-content"} 
+        backgroundColor={"transparent"}
+        translucent
+      />
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  loading: {
+    backgroundColor: theme.colors["gray-600"],
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+    alignItems: "center",
+    justifyContent: "center"
+  }
+})
